@@ -5,13 +5,18 @@
     text-align: center;
 }
 
+button {
+    margin: 10px;
+    padding: 10px;
+}
+
 .container {
     align-content:stretch;
     aspect-ratio: 1;
     border: 1px solid black;
     display: flex;
     flex-wrap: wrap;
-    height: 95vh;
+    max-height: 800px;
     justify-content:stretch;
     margin: 2.5vh auto;
 }
