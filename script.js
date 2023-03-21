@@ -1,10 +1,9 @@
 const button = document.querySelector("button");
 const container = document.querySelector(".container");
 
-
-newGrid(16, paintBlack);
-
 button.addEventListener("click", askGrid);
+
+askGrid();
 
 function askGrid() {
     let n;
@@ -18,13 +17,15 @@ function askGrid() {
 
 function choosePainter() {
     const painter = prompt(
-        "Type BLACK for a black brush, MULTICOLOR, for a multicolored brush"
+        "Type BLACK for a black brush, MULTICOLOR, for a multicolored brush, SHADER for an incresing level of black"
         ).toUpperCase();
     switch(painter) {
         case "BLACK":
             return paintBlack;
         case "MULTICOLOR":
             return paintRandom;
+        case "SHADER":
+            return paintShader;
         default:
             alert("Default to black");
             return paintBlack;
@@ -56,5 +57,13 @@ function paintRandom(square) {
     const blue =  Math.floor(Math.random() * 256);
     const green =  Math.floor(Math.random() * 256);
     square.style.backgroundColor = `rgb(${red},${blue},${green})`;
+}
+
+function paintShader(square) {
+    let passes = (square.dataset.passes) ? parseInt(square.dataset.passes) : 0;
+    if (passes < 10) passes++;
+    square.dataset.passes = passes;
+    const grayIntensity = Math.round(255 - (255/10 * passes));
+    square.style.backgroundColor = `rgb(${grayIntensity}, ${grayIntensity}, ${grayIntensity})`;
 }
 
