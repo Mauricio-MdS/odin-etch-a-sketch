@@ -2,9 +2,9 @@ const button = document.querySelector("button");
 const container = document.querySelector(".container");
 
 
-newGrid(16);
+newGrid(16, paintBlack);
 
-button.addEventListener("click", askGrid );
+button.addEventListener("click", askGrid);
 
 function askGrid() {
     let n;
@@ -12,11 +12,27 @@ function askGrid() {
         n = prompt("Choose N for a N X N grid. It must be less than 100.");
         n = isNaN(n) ? 0 : Math.floor(n);
     } while (n < 1 || n > 100)
-    newGrid(n);
+    const painter = choosePainter(); 
+    newGrid(n, painter);
 }
 
-// Create a grid of nXn square divs.
-function newGrid(n) {
+function choosePainter() {
+    const painter = prompt(
+        "Type BLACK for a black brush, MULTICOLOR, for a multicolored brush"
+        ).toUpperCase();
+    switch(painter) {
+        case "BLACK":
+            return paintBlack;
+        case "MULTICOLOR":
+            return paintRandom;
+        default:
+            alert("Default to black");
+            return paintBlack;
+    }
+}
+
+// Create a grid of nXn square divs, and set the painter;
+function newGrid(n, painter) {
 
     container.innerHTML = "";
 
@@ -25,12 +41,20 @@ function newGrid(n) {
         const div = document.createElement("div");
         div.classList.add("square");
         div.style.cssText = `height: ${height}%; aspect-ratio: 1;`;
-        div.addEventListener("mouseover", (event) => paintSquare(event.target));
+        div.addEventListener("mouseover", (event) => painter(event.target));
         container.appendChild(div);
     }
 
 }
 
-function paintSquare(square) {
-    square.style.backgroundColor = "black";
+function paintBlack(square) {
+    square.style.backgroundColor = `rgb(0, 0, 0)`;
 }
+
+function paintRandom(square) {
+    const red =  Math.floor(Math.random() * 256);
+    const blue =  Math.floor(Math.random() * 256);
+    const green =  Math.floor(Math.random() * 256);
+    square.style.backgroundColor = `rgb(${red},${blue},${green})`;
+}
+
